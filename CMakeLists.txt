@@ -34,3 +34,4 @@ set(BLEND2D_STATIC TRUE)
 include("${BLEND2D_DIR}/CMakeLists.txt")
 
 add_subdirectory(src)
+include_directories(${CMAKE_SOURCE_DIR}/src/third_party)
