@@ -186,6 +186,11 @@ std::pair<double, double> AxisWidget::getColorMapSize() const
     return std::make_pair(colormap_width_, std::max(viewport_height_ - 2 * margin_, 0.0));
 }
 
+std::pair<double, double> AxisWidget::getColorMapPos() const
+{
+    return std::make_pair(viewport_width_ - colormap_width_ - margin_, margin_);
+}
+
 } // namespace drawing
 } // namespace gui
 } // namespace roboflow

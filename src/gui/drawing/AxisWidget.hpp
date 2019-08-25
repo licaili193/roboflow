@@ -86,6 +86,7 @@ public:
   // return inner canvas data range: x, y, dx, dy
   std::vector<double> getInnerCanvasRange() const;
   std::pair<double, double> getColorMapSize() const;
+  std::pair<double, double> getColorMapPos() const;
 };
 
 } // namespace drawing
