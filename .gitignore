@@ -33,3 +33,5 @@
 
 # Intermediate files
 build/
+
+\.vscode/

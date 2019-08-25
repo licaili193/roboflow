@@ -33,5 +33,8 @@ set(ASMJIT_DIR "${CMAKE_SOURCE_DIR}/src/third_party/asmjit")
 set(BLEND2D_STATIC TRUE)
 include("${BLEND2D_DIR}/CMakeLists.txt")
 
+# Eigen
+set(EIGEN_DIR "${CMAKE_SOURCE_DIR}/src/third_party")
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_subdirectory(src)
-include_directories(${CMAKE_SOURCE_DIR}/src/third_party)
