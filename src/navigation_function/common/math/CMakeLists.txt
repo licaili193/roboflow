@@ -7,6 +7,7 @@ add_library(navigation_function_math
     DestinationFunction.cpp
     BubbleDestinationFunction.cpp
     Sphere.cpp
+    Squircle.cpp
 )
 target_include_directories(navigation_function_math
     PUBLIC ${EIGEN_DIR}

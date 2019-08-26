@@ -59,7 +59,7 @@ void DestinationFunction::offset(double dx, double dy)
     destination_(1) += dy;
 }
 
-double DestinationFunction::evaluate(Eigen::Vector2d p)
+double DestinationFunction::evaluate(Eigen::Vector2d p) const
 {
     return (p - destination_).squaredNorm();
 }

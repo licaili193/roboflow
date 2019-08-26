@@ -175,20 +175,16 @@ void AxisWidget::generate_font()
     font_.createFromFace(face_, font_size_);
 }
 
-std::vector<double> AxisWidget::getInnerCanvasRange() const
+BLRect AxisWidget::getInnerCanvasRange() const
 {
-    return {canvas_data_x_, canvas_data_y_,
-            canvas_data_width_, canvas_data_height_};
+    return BLRect(canvas_data_x_, canvas_data_y_,
+                  canvas_data_width_, canvas_data_height_);
 }
 
-std::pair<double, double> AxisWidget::getColorMapSize() const
+BLRect AxisWidget::getColorMapRect() const
 {
-    return std::make_pair(colormap_width_, std::max(viewport_height_ - 2 * margin_, 0.0));
-}
-
-std::pair<double, double> AxisWidget::getColorMapPos() const
-{
-    return std::make_pair(viewport_width_ - colormap_width_ - margin_, margin_);
+    return BLRect(viewport_width_ - colormap_width_ - margin_,
+                  margin_, colormap_width_, std::max(viewport_height_ - 2 * margin_, 0.0));
 }
 
 } // namespace drawing

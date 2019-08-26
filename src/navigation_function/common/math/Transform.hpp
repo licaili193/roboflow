@@ -33,7 +33,7 @@ namespace math
 
 class Transform
 {
-  double scale_;
+  Eigen::Vector2d scale_;
   double rotate_;
   Eigen::Vector2d translate_;
 
@@ -43,17 +43,22 @@ class Transform
 
 public:
   // scale factor, rotation radian, translate vector
-  Transform(double, double, Eigen::Vector2d);
-  // scale factor, rotation radian, translate x, translate y
-  Transform(double, double, double, double);
+  Transform(Eigen::Vector2d, double, Eigen::Vector2d);
+  // scale x, scale y, rotation radian, translate x, translate y
+  Transform(double, double, double, double, double);
+
+  Transform(const Transform &other);
+  void operator=(const Transform &other);
+  Transform(const Transform &&other);
+  void operator=(const Transform &&other);
 
   // input: coordinate of the transformed frame (current wall frame)
   // return: coordinate of the original frame (rigid body frame)
-  Eigen::Vector2d operator()(Eigen::Vector2d);
-  Eigen::Vector2d transformFrom(Eigen::Vector2d);
+  Eigen::Vector2d operator()(Eigen::Vector2d) const;
+  Eigen::Vector2d transformFrom(Eigen::Vector2d) const;
   // input: coordinate of the original frame (rigid body frame)
   // return: coordinate of the transformed frame (current wall frame)
-  Eigen::Vector2d transformTo(Eigen::Vector2d);
+  Eigen::Vector2d transformTo(Eigen::Vector2d) const;
 };
 
 } // namespace math

@@ -66,7 +66,7 @@ void BubbleDestinationFunction::offset(double dx, double dy)
     destination_(1) += dy;
 }
 
-double BubbleDestinationFunction::evaluate(Eigen::Vector2d p)
+double BubbleDestinationFunction::evaluate(Eigen::Vector2d p) const
 {
     return std::pow((p - destination_).squaredNorm() - radius_ * radius_, 2.0);
 }

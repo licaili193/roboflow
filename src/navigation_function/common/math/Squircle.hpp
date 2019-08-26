@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2019 Caili Li
+// Copyright (c) 2019 Caili LI
 
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -26,6 +26,10 @@
 
 #include <Eigen/Core>
 
+#include "ScalarObject.hpp"
+#include "StarObject.hpp"
+#include "Transform.hpp"
+
 namespace roboflow
 {
 namespace navigation_function
@@ -33,13 +37,45 @@ namespace navigation_function
 namespace math
 {
 
-class TraceableObject
+class Squircle final : public ScalarObject, public StarObject
 {
+    Eigen::Vector2d center_;
+    double radius_;
+    double s_;
+    double rotate_;
+    Eigen::Vector2d scale_;
+
+    // cached transform
+    Transform transform_;
+    bool is_init_;
+
+    void set_cached_transform();
+
 public:
-  // direction vector
-  virtual double getRadius(Eigen::Vector2d) = 0;
-  // angle preciseness
-  virtual std::vector<Eigen::Vector2d> trace(double) = 0;
+    // center location, radius, squareness, rotation, scale factor
+    Squircle(Eigen::Vector2d, double, double, double, Eigen::Vector2d);
+    // center location: x, y, radius: r, squareness: s, rotation ro,scale: sx, sy
+    Squircle(double, double, double, double, double, double, double);
+
+    // center location
+    void setCenter(Eigen::Vector2d);
+    // center location: x, y
+    void setCenter(double, double);
+    // radius: r
+    void setRadius(double);
+    // squareness: s
+    void setSquareness(double);
+    // rotation: angle
+    void setRotation(double);
+    // scale factor
+    void setScale(Eigen::Vector2d);
+    // scale factor: sx, sy
+    void setScale(double, double);
+
+    double evaluate(Eigen::Vector2d) const override;
+    double getRadius(Eigen::Vector2d) const override;
+    double getRadius(double) const override;
+    Eigen::Vector2d getCenter() const override;
 };
 
 } // namespace math

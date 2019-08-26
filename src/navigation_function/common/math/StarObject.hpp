@@ -22,9 +22,9 @@
 
 /* code */
 
-#include <Eigen/Core>
+#include <vector>
 
-#include "ScalarObject.hpp"
+#include <Eigen/Core>
 
 namespace roboflow
 {
@@ -33,25 +33,14 @@ namespace navigation_function
 namespace math
 {
 
-class BubbleDestinationFunction final : public ScalarObject
+class StarObject
 {
-  Eigen::Vector2d destination_;
-  double radius_;
-
 public:
-  // destination location and radius: x, y, r
-  BubbleDestinationFunction(double, double, double);
-  BubbleDestinationFunction(Eigen::Vector2d, double);
-
-  // destination location: x, y
-  void setDestination(double, double);
-  void setDestination(Eigen::Vector2d);
-  // destination offset: dx, dy
-  void offset(double, double);
-  // radius: r
-  void setRadius(double);
-
-  double evaluate(Eigen::Vector2d) const override;
+  // direction vector
+  virtual double getRadius(Eigen::Vector2d) const = 0;
+  // angle
+  virtual double getRadius(double) const = 0;
+  virtual Eigen::Vector2d getCenter() const = 0;
 };
 
 } // namespace math

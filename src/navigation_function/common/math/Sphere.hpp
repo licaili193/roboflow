@@ -27,7 +27,7 @@
 #include <Eigen/Core>
 
 #include "ScalarObject.hpp"
-#include "TraceableObject.hpp"
+#include "StarObject.hpp"
 
 namespace roboflow
 {
@@ -36,27 +36,28 @@ namespace navigation_function
 namespace math
 {
 
-class Sphere final : public ScalarObject, public TraceableObject
+class Sphere final : public ScalarObject, public StarObject
 {
-  Eigen::Vector2d center_;
-  double radius_;
+    Eigen::Vector2d center_;
+    double radius_;
 
 public:
-  // center location, radius
-  Sphere(Eigen::Vector2d, double);
-  // center location: x, y, radius: r
-  Sphere(double, double, double);
+    // center location, radius
+    Sphere(Eigen::Vector2d, double);
+    // center location: x, y, radius: r
+    Sphere(double, double, double);
 
-  // center location
-  void setCenter(Eigen::Vector2d);
-  // center location: x, y
-  void setCenter(double, double);
-  // radius: r
-  void setRadius(double);
+    // center location
+    void setCenter(Eigen::Vector2d);
+    // center location: x, y
+    void setCenter(double, double);
+    // radius: r
+    void setRadius(double);
 
-  double evaluate(Eigen::Vector2d) override;
-  double getRadius(Eigen::Vector2d) override;
-  std::vector<Eigen::Vector2d> trace(double);
+    double evaluate(Eigen::Vector2d) const override;
+    double getRadius(Eigen::Vector2d) const override;
+    double getRadius(double) const override;
+    Eigen::Vector2d getCenter() const override;
 };
 
 } // namespace math

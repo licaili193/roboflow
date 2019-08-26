@@ -33,7 +33,7 @@ namespace navigation_function
 namespace math
 {
 
-Transform::Transform(double s, double r, Eigen::Vector2d t)
+Transform::Transform(Eigen::Vector2d s, double r, Eigen::Vector2d t)
 {
     scale_ = s;
     rotate_ = r;
@@ -42,26 +42,63 @@ Transform::Transform(double s, double r, Eigen::Vector2d t)
     construct_affine();
 }
 
-Transform::Transform(double s, double r, double x, double y)
+Transform::Transform(double sx, double sy, double r, double x, double y)
 {
-    Transform(s, r, {x, y});
+    Transform({sx, sy}, r, {x, y});
+}
+
+Transform::Transform(const Transform &other)
+{
+    scale_ = other.scale_;
+    rotate_ = other.rotate_;
+    translate_ = other.translate_;
+    affine_ = other.affine_;
+}
+
+void Transform::operator=(const Transform &other)
+{
+    scale_ = other.scale_;
+    rotate_ = other.rotate_;
+    translate_ = other.translate_;
+    affine_ = other.affine_;
+}
+
+Transform::Transform(const Transform &&other)
+{
+    scale_ = std::move(other.scale_);
+    rotate_ = std::move(other.rotate_);
+    translate_ = std::move(other.translate_);
+    affine_ = std::move(other.affine_);
+}
+
+void Transform::operator=(const Transform &&other)
+{
+    scale_ = std::move(other.scale_);
+    rotate_ = std::move(other.rotate_);
+    translate_ = std::move(other.translate_);
+    affine_ = std::move(other.affine_);
 }
 
 void Transform::construct_affine()
 {
-    Eigen::Matrix2d S = (Eigen::Matrix2d() << scale_, 0, 0, scale_).finished();
+    Eigen::Matrix2d S = (Eigen::Matrix2d() << scale_(0), 0, 0, scale_(1)).finished();
     Eigen::Matrix2d R = (Eigen::Matrix2d() << std::cos(rotate_), -std::sin(rotate_),
                          std::sin(rotate_), std::cos(rotate_))
                             .finished();
-    affine_ = S * R;
+    affine_ = R * S;
 }
 
-Eigen::Vector2d Transform::transformFrom(Eigen::Vector2d p)
+Eigen::Vector2d Transform::operator()(Eigen::Vector2d p) const
+{
+    return transformFrom(p);
+}
+
+Eigen::Vector2d Transform::transformFrom(Eigen::Vector2d p) const
 {
     return affine_.inverse() * (p - translate_);
 }
 
-Eigen::Vector2d Transform::transformTo(Eigen::Vector2d p)
+Eigen::Vector2d Transform::transformTo(Eigen::Vector2d p) const
 {
     return affine_ * p + translate_;
 }

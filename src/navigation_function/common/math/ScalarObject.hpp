@@ -34,7 +34,7 @@ namespace math
 class ScalarObject
 {
 public:
-  virtual double evaluate(Eigen::Vector2d) = 0;
+  virtual double evaluate(Eigen::Vector2d) const = 0;
 };
 
 } // namespace math

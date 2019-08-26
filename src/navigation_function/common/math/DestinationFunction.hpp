@@ -48,7 +48,7 @@ public:
   // destination offset: dx, dy
   void offset(double, double);
 
-  double evaluate(Eigen::Vector2d) override;
+  double evaluate(Eigen::Vector2d) const override;
 };
 
 } // namespace math

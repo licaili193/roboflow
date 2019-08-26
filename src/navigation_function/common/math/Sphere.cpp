@@ -33,9 +33,9 @@ namespace navigation_function
 namespace math
 {
 
-Sphere::Sphere(Eigen::Vector2d dest, double r)
+Sphere::Sphere(Eigen::Vector2d p, double r)
 {
-    setCenter(dest);
+    setCenter(p);
     setRadius(r);
 }
 
@@ -45,9 +45,9 @@ Sphere::Sphere(double x, double y, double r)
     setRadius(r);
 }
 
-void Sphere::setCenter(Eigen::Vector2d dest)
+void Sphere::setCenter(Eigen::Vector2d p)
 {
-    center_ = std::move(dest);
+    center_ = std::move(p);
 }
 
 void Sphere::setCenter(double x, double y)
@@ -60,9 +60,24 @@ void Sphere::setRadius(double r)
     radius_ = r;
 }
 
-double Sphere::evaluate(Eigen::Vector2d p)
+double Sphere::evaluate(Eigen::Vector2d p) const
 {
     return (p - center_).squaredNorm() - radius_ * radius_;
+}
+
+double Sphere::getRadius(Eigen::Vector2d p) const
+{
+    return radius_;
+}
+
+double Sphere::getRadius(double) const
+{
+    return radius_;
+}
+
+Eigen::Vector2d Sphere::getCenter() const
+{
+    return center_;
 }
 
 } // namespace math
