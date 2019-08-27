@@ -5,6 +5,7 @@ project(drawing)
 add_library(drawing_widgets
     AxisWidget.cpp
     DrawableWidget.cpp
+    CanvasWidget.cpp
 )
 target_link_libraries(drawing_widgets 
     Blend2D::Blend2D

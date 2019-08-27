@@ -49,6 +49,20 @@ void AxisWidget::setRange(double x, double y, double dx, double dy)
         std::string tmp = os.str();
         y_tick_labels_.push_back(std::move(tmp));
     }
+
+    // iterate y axis labels to see what's the max width
+    text_height_ = font_.size();
+    for (auto s : y_tick_labels_)
+    {
+        BLGlyphBuffer gb;
+        gb.setUtf8Text(s.c_str(), s.length());
+        BLTextMetrics m;
+        font_.getTextMetrics(gb, m);
+        double tmp = m.boundingBox.x1 - m.boundingBox.x0;
+        if (max_y_label_width_ < tmp)
+            max_y_label_width_ = tmp;
+    }
+    get_cached_canvas_dimension();
 }
 
 std::vector<double> AxisWidget::get_ticks_helper(double max, double min, int step_count)
@@ -96,6 +110,13 @@ void AxisWidget::get_ticks()
 void AxisWidget::setDrawColormap(bool draw)
 {
     is_draw_colormap_ = draw;
+    get_cached_canvas_dimension();
+}
+
+void AxisWidget::setViewport(double x, double y, double w, double h)
+{
+    DrawableWidget::setViewport(x, y, w, h);
+    get_cached_canvas_dimension();
 }
 
 void AxisWidget::draw(BLContext &ctx)
@@ -103,28 +124,6 @@ void AxisWidget::draw(BLContext &ctx)
     if (predraw(ctx))
     {
         // begin drawing
-
-        // iterate y axis labels to see what's the max width
-        double max_width = 0;
-        double text_height = font_.size();
-        for (auto s : y_tick_labels_)
-        {
-            BLGlyphBuffer gb;
-            gb.setUtf8Text(s.c_str(), s.length());
-            BLTextMetrics m;
-            font_.getTextMetrics(gb, m);
-            double tmp = m.boundingBox.x1 - m.boundingBox.x0;
-            if (max_width < tmp)
-                max_width = tmp;
-        }
-
-        // calculate four corners of the inner canvas
-        double icx = 2 * margin_ + max_width;
-        double icy = margin_ + text_height / 2;
-        double icw = viewport_width_ - icx - margin_;
-        if (is_draw_colormap_)
-            icw -= margin_ + colormap_width_;
-        double ich = viewport_height_ - icy - 2 * margin_ - text_height;
 
         // draw each ticks
         ctx.setFillStyle(BLRgba32(0xFF000000));
@@ -137,13 +136,13 @@ void AxisWidget::draw(BLContext &ctx)
             gb.setUtf8Text(x_tick_labels_[i].c_str(), x_tick_labels_[i].length());
             BLTextMetrics m;
             font_.getTextMetrics(gb, m);
-            double pos_x = icx + (x_ticks_[i] - canvas_data_x_) / canvas_data_width_ * icw;
-            double pos_y = icy + ich + margin_;
+            double pos_x = icx_ + (x_ticks_[i] - canvas_data_x_) / canvas_data_width_ * icw_;
+            double pos_y = icy_ + ich_ + margin_;
             ctx.fillUtf8Text(BLPoint(pos_x - (m.boundingBox.x1 - m.boundingBox.x0) / 2.0,
                                      pos_y + font_.size()),
                              font_,
                              x_tick_labels_[i].c_str(), x_tick_labels_[i].length());
-            ctx.strokeLine(pos_x, icy + ich, pos_x, icy + ich - tick_length_);
+            ctx.strokeLine(pos_x, icy_ + ich_, pos_x, icy_ + ich_ - tick_length_);
         }
         for (int i = 0; i < y_ticks_.size(); i++)
         {
@@ -153,16 +152,16 @@ void AxisWidget::draw(BLContext &ctx)
             gb.setUtf8Text(x_tick_labels_[i].c_str(), x_tick_labels_[i].length());
             BLTextMetrics m;
             font_.getTextMetrics(gb, m);
-            double pos_x = icx - m.boundingBox.x1 + m.boundingBox.x0 - margin_;
-            double pos_y = icy + ich - (y_ticks_[i] - canvas_data_y_) / canvas_data_height_ * ich;
-            ctx.fillUtf8Text(BLPoint(pos_x, pos_y + font_.size() - text_height / 2.0),
+            double pos_x = icx_ - m.boundingBox.x1 + m.boundingBox.x0 - margin_;
+            double pos_y = icy_ + ich_ - (y_ticks_[i] - canvas_data_y_) / canvas_data_height_ * ich_;
+            ctx.fillUtf8Text(BLPoint(pos_x, pos_y + font_.size() - text_height_ / 2.0),
                              font_, y_tick_labels_[i].c_str(), y_tick_labels_[i].length());
-            ctx.strokeLine(icx, pos_y, icx + tick_length_, pos_y);
+            ctx.strokeLine(icx_, pos_y, icx_ + tick_length_, pos_y);
         }
 
         // draw axis frame
         ctx.setStrokeWidth(frame_width_);
-        ctx.strokeBox(icx, icy, icx + icw, icy + ich);
+        ctx.strokeBox(icx_, icy_, icx_ + icw_, icy_ + ich_);
 
         // end drawing
         postdraw(ctx);
@@ -175,10 +174,25 @@ void AxisWidget::generate_font()
     font_.createFromFace(face_, font_size_);
 }
 
+void AxisWidget::get_cached_canvas_dimension()
+{
+    icx_ = 2 * margin_ + max_y_label_width_;
+    icy_ = margin_ + text_height_ / 2;
+    icw_ = viewport_width_ - icx_ - margin_;
+    if (is_draw_colormap_)
+        icw_ -= margin_ + colormap_width_;
+    ich_ = viewport_height_ - icy_ - 2 * margin_ - text_height_;
+}
+
 BLRect AxisWidget::getInnerCanvasRange() const
 {
     return BLRect(canvas_data_x_, canvas_data_y_,
                   canvas_data_width_, canvas_data_height_);
+}
+
+BLRect AxisWidget::getInnerCanvasRect() const
+{
+    return BLRect(icx_, icy_, icw_, ich_);
 }
 
 BLRect AxisWidget::getColorMapRect() const

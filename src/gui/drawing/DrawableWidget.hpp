@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __DRAWABLEWIDGET__
+#define __DRAWABLEWIDGET__
+
 #include <blend2d.h>
 
 namespace roboflow
@@ -50,7 +53,7 @@ public:
 
   // starting at the top left corner
   // x, y, width, height
-  void setViewport(double, double, double, double);
+  virtual void setViewport(double, double, double, double);
   void setDraw(bool);
 
   virtual void draw(BLContext &) = 0;
@@ -59,3 +62,5 @@ public:
 } // namespace drawing
 } // namespace gui
 } // namespace roboflow
+
+#endif

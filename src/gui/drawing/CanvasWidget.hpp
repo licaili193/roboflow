@@ -22,47 +22,46 @@
 
 /* code */
 
+#ifndef __CANVASWIDGET__
+#define __CANVASWIDGET__
+
+#include <string>
+#include <vector>
+#include <utility>
+
 #include <blend2d.h>
 
-#include "gui/drawing/AxisWidget.hpp"
-#include "gui/drawing/CanvasWidget.hpp"
+#include "DrawableWidget.hpp"
 
-int main(int argc, char *argv[])
+namespace roboflow
 {
-    roboflow::gui::drawing::AxisWidget axis;
-    axis.setViewport(0, 0, 480, 480);
-    axis.setRange(-1, -1, 2, 2);
-    axis.setDraw(true);
+namespace gui
+{
+namespace drawing
+{
 
-    roboflow::gui::drawing::CanvasWidget canvas;
-    auto canvas_rect = axis.getInnerCanvasRect();
-    auto canvas_range = axis.getInnerCanvasRange();
-    canvas.setViewport(canvas_rect.x, canvas_rect.y,
-                       canvas_rect.w, canvas_rect.h);
-    canvas.setRange(canvas_range.x, canvas_range.y,
-                    canvas_range.w, canvas_range.h);
-    canvas.setDraw(true);
+class CanvasWidget final : public DrawableWidget
+{
+    double data_x_;
+    double data_y_;
+    double data_dx_;
+    double data_dy_;
 
-    BLImage img(480, 480, BL_FORMAT_PRGB32);
+    // tempoary data
+    // tempoary data
 
-    // Attach a rendering context into `img`.
-    BLContext ctx(img);
+public:
+    // temporary function to prepare the temporary data
+    void init();
 
-    // Clear the image.
-    ctx.setFillStyle(BLRgba32(0xFFFFFFFF));
-    ctx.fillAll();
+    // data range: x, y, dx, dy
+    void setRange(double, double, double, double);
 
-    // Fill some path.
-    axis.draw(ctx);
-    canvas.draw(ctx);
+    void draw(BLContext &) override;
+};
 
-    // Detach the rendering context from `img`.
-    ctx.end();
+} // namespace drawing
+} // namespace gui
+} // namespace roboflow
 
-    // Let's use some built-in codecs provided by Blend2D.
-    BLImageCodec codec;
-    codec.findByName("BMP");
-    img.writeToFile("canvas_test.bmp", codec);
-
-    return 0;
-}
+#endif

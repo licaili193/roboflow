@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __AXISWIDGET__
+#define __AXISWIDGET__
+
 #include <string>
 #include <vector>
 #include <utility>
@@ -68,9 +71,19 @@ class AxisWidget final : public DrawableWidget
   std::vector<std::string> x_tick_labels_;
   std::vector<std::string> y_tick_labels_;
 
+  double max_y_label_width_;
+  double text_height_;
+
+  // cached canvas dimension
+  double icx_;
+  double icy_;
+  double icw_;
+  double ich_;
+
   // data range: max, min, step number
   std::vector<double> get_ticks_helper(double, double, int);
   void get_ticks();
+  void get_cached_canvas_dimension();
 
   void generate_font();
 
@@ -82,12 +95,17 @@ public:
   void setDrawColormap(bool);
 
   void draw(BLContext &) override;
+  void setViewport(double, double, double, double) override;
 
   // return inner canvas data range: x, y, dx, dy
   BLRect getInnerCanvasRange() const;
+  // return inner canvas dimension: x, y, w, h
+  BLRect getInnerCanvasRect() const;
   BLRect getColorMapRect() const;
 };
 
 } // namespace drawing
 } // namespace gui
 } // namespace roboflow
+
+#endif
