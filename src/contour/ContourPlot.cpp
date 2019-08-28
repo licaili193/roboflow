@@ -73,15 +73,21 @@ void ContourPlot::draw(BLContext &ctx)
 
             // putting point at start and end of strip
             // retreiving index
-            index = pStrip->front();
-            x = contour_.GetXi(index);
-            y = contour_.GetYi(index);
-            path.moveTo(x, y);
-            // retreiving index
-            index = pStrip->back();
-            x = contour_.GetXi(index);
-            y = contour_.GetYi(index);
-            path.lineTo(x, y);
+            bool is_first = true;
+            for (auto index : *pStrip)
+            {
+                x = contour_.GetXi(index);
+                y = contour_.GetYi(index);
+                if (is_first)
+                {
+                    path.moveTo(x, y);
+                    is_first = false;
+                }
+                else
+                {
+                    path.lineTo(x, y);
+                }
+            }
         }
         ctx.strokePath(path);
     }
