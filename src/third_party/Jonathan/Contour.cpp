@@ -17,8 +17,8 @@ namespace Jonathan
 
 double TestFunction(double x, double y)
 {
-	return 0.5 * (cos(x + 3.14 / 4) + sin(y + 3.14 / 4));
-};
+	return x * x + y * y;
+}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -443,7 +443,7 @@ double CContour::Field(int x, int y) /* evaluate funct if we must,	*/
 void CContour::SetPlanes(const std::vector<double> &vPlanes)
 {
 	// cleaning memory
-	CleanMemory();
+	CContour::CleanMemory();
 
 	m_vPlanes = vPlanes;
 };
@@ -455,6 +455,9 @@ void CContour::SetFieldFcn(double (*_pFieldFcn)(double, double))
 
 void CContour::SetFirstGrid(int iCol, int iRow)
 {
+	// cleaning work matrices if allocated
+	CContour::CleanMemory();
+
 	m_iColFir = std::max(iCol, 2);
 	m_iRowFir = std::max(iRow, 2);
 }
@@ -462,7 +465,7 @@ void CContour::SetFirstGrid(int iCol, int iRow)
 void CContour::SetSecondaryGrid(int iCol, int iRow)
 {
 	// cleaning work matrices if allocated
-	CleanMemory();
+	CContour::CleanMemory();
 
 	m_iColSec = std::max(iCol, 2);
 	m_iRowSec = std::max(iRow, 2);

@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.1.0)
 
 project(contour)
 
-add_executable(contour_test
-    contour_test.cpp
+add_library(contour_plot
+    ContourPlot.cpp
+)
+target_link_libraries(contour_plot 
+    Blend2D::Blend2D
+    jonathan_contour
 )
 
-target_link_libraries(contour_test 
-    Blend2D::Blend2D
-)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})

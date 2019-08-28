@@ -9,6 +9,7 @@ add_library(drawing_widgets
 )
 target_link_libraries(drawing_widgets 
     Blend2D::Blend2D
+    contour_plot # temporary here
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
