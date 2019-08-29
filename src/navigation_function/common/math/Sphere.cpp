@@ -39,11 +39,7 @@ Sphere::Sphere(Eigen::Vector2d p, double r)
     setRadius(r);
 }
 
-Sphere::Sphere(double x, double y, double r)
-{
-    setCenter(x, y);
-    setRadius(r);
-}
+Sphere::Sphere(double x, double y, double r) : Sphere({x, y}, r) {}
 
 void Sphere::setCenter(Eigen::Vector2d p)
 {

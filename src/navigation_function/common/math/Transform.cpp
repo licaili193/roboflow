@@ -24,6 +24,8 @@
 
 #include <cmath>
 
+#include <Eigen/LU>
+
 #include "Transform.hpp"
 
 namespace roboflow
@@ -43,9 +45,7 @@ Transform::Transform(Eigen::Vector2d s, double r, Eigen::Vector2d t)
 }
 
 Transform::Transform(double sx, double sy, double r, double x, double y)
-{
-    Transform({sx, sy}, r, {x, y});
-}
+    : Transform({sx, sy}, r, {x, y}) {}
 
 Transform::Transform(const Transform &other)
 {

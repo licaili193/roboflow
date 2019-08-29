@@ -33,24 +33,20 @@ namespace navigation_function
 namespace math
 {
 
-Squircle::Squircle(Eigen::Vector2d p, double r, double s, double ro, Eigen::Vector2d a)
-    : transform_(a, ro, p)
+Squircle::Squircle(Eigen::Vector2d p, double s, double r, Eigen::Vector2d a)
+    : transform_(a, r, p)
 {
     is_init_ = false;
     setCenter(p);
-    setRadius(r);
     setSquareness(s);
-    setRotation(ro);
+    setRotation(r);
     setScale(a);
     is_init_ = true;
     set_cached_transform();
 }
 
-Squircle::Squircle(double x, double y, double r, double s, double ro, double sx, double sy)
-    : transform_(sx, sy, ro, x, y)
-{
-    Squircle({x, y}, r, s, ro, {sx, sy});
-}
+Squircle::Squircle(double x, double y, double s, double r, double sx, double sy)
+    : Squircle({x, y}, s, r, {sx, sy}) {}
 
 void Squircle::setCenter(Eigen::Vector2d p)
 {
@@ -62,13 +58,6 @@ void Squircle::setCenter(Eigen::Vector2d p)
 void Squircle::setCenter(double x, double y)
 {
     setCenter({x, y});
-}
-
-void Squircle::setRadius(double r)
-{
-    radius_ = r;
-    if (is_init_)
-        set_cached_transform();
 }
 
 void Squircle::setSquareness(double s)
@@ -119,7 +108,7 @@ double Squircle::getRadius(Eigen::Vector2d p) const
     tp.normalize();
     double lou = std::sqrt(2.0 / (1.0 +
                                   std::sqrt(1.0 - 4.0 * s_ * s_ * std::pow(tp(0) * tp(1), 2.0))));
-    auto tp2 = transform_(lou * tp);
+    auto tp2 = transform_.transformTo(lou * tp);
     return (tp2 - center_).norm();
 }
 

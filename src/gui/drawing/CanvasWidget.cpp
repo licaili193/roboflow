@@ -25,7 +25,7 @@
 #include <cmath>
 #include <algorithm>
 
-#include "contour/ContourPlot.hpp" // temporary here
+#include "navigation_function/common/math/Squircle.hpp"
 
 #include "CanvasWidget.hpp"
 
@@ -35,11 +35,6 @@ namespace gui
 {
 namespace drawing
 {
-
-void CanvasWidget::init()
-{
-    // temporary init
-}
 
 void CanvasWidget::setRange(double x, double y, double dx, double dy)
 {
@@ -65,8 +60,25 @@ void CanvasWidget::draw(BLContext &ctx)
         ctx.setStrokeWidth(normal_stoke_width);
         ctx.setStrokeStyle(BLRgba32(0xFF000000));
 
-        contour::ContourPlot ct;
-        ct.draw(ctx);
+        navigation_function::math::Squircle sq(0.5, 0.5, 0.99, 0.6, 0.2, 0.4);
+        BLPath path;
+        double r = 0;
+        bool is_first = true;
+        while (r < 2.0 * M_PI)
+        {
+            double lou = sq.getRadius(r);
+            if (is_first)
+            {
+                path.moveTo(0.5 + std::cos(r) * lou, 0.5 + std::sin(r) * lou);
+                is_first = false;
+            }
+            else
+            {
+                path.lineTo(0.5 + std::cos(r) * lou, 0.5 + std::sin(r) * lou);
+            }
+            r += M_PI / 90.0;
+        }
+        ctx.strokePath(path);
 
         // end drawing
         postdraw(ctx);

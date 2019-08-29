@@ -51,9 +51,6 @@ class CanvasWidget final : public DrawableWidget
     // tempoary data
 
 public:
-    // temporary function to prepare the temporary data
-    void init();
-
     // data range: x, y, dx, dy
     void setRange(double, double, double, double);
 

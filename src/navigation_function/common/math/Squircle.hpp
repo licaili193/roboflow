@@ -40,7 +40,6 @@ namespace math
 class Squircle final : public ScalarObject, public StarObject
 {
     Eigen::Vector2d center_;
-    double radius_;
     double s_;
     double rotate_;
     Eigen::Vector2d scale_;
@@ -52,17 +51,15 @@ class Squircle final : public ScalarObject, public StarObject
     void set_cached_transform();
 
 public:
-    // center location, radius, squareness, rotation, scale factor
-    Squircle(Eigen::Vector2d, double, double, double, Eigen::Vector2d);
-    // center location: x, y, radius: r, squareness: s, rotation ro,scale: sx, sy
-    Squircle(double, double, double, double, double, double, double);
+    // center location, squareness, rotation, scale factor
+    Squircle(Eigen::Vector2d, double, double, Eigen::Vector2d);
+    // center location: x, y, squareness: s, rotation r,scale: sx, sy
+    Squircle(double, double, double, double, double, double);
 
     // center location
     void setCenter(Eigen::Vector2d);
     // center location: x, y
     void setCenter(double, double);
-    // radius: r
-    void setRadius(double);
     // squareness: s
     void setSquareness(double);
     // rotation: angle
