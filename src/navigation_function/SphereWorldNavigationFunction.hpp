@@ -22,27 +22,53 @@
 
 /* code */
 
-#include <vector>
+#ifndef __SPHEREWORLDNAVIGATIONFUNCTION__
+#define __SPHEREWORLDNAVIGATIONFUNCTION_
+
+#include <memory>
+#include <utility>
+#include <unordered_map>
 
 #include <Eigen/Core>
+
+#include "navigation_function/math/Sphere.hpp"
+#include "navigation_function/math/ScalarObject.hpp"
 
 namespace roboflow
 {
 namespace navigation_function
 {
-namespace math
-{
 
-class StarObject
+class SphereWorldNavigationFunction
 {
+    std::unordered_map<uint64_t, std::weak_ptr<math::Sphere>> obstacles_;
+    std::weak_ptr<math::Sphere> zeroth_obstacle_;
+    std::weak_ptr<math::ScalarObject> destination_;
+    double kappa_ = 1.0;
+
 public:
-  // direction vector
-  virtual double getRadius(Eigen::Vector2d) const = 0;
-  // angle
-  virtual double getRadius(double) const = 0;
-  virtual Eigen::Vector2d getCenter() const = 0;
+    // insert specific obstacle; return: successful or not
+    bool setObstacle(std::shared_ptr<math::Sphere>);
+    // set the obstacle defining the workspace
+    void setZerothObstacle(std::shared_ptr<math::Sphere>);
+    // set destination function
+    void setDestination(std::shared_ptr<math::ScalarObject>);
+    // clear all obstacles
+    void clear();
+    // delete specific obstcle; return: successful or not
+    bool eraseObstacle(uint64_t);
+    // set kappa
+    void setKappa(double);
+    // get kappa
+    double getKappa() const;
+
+    // point
+    std::pair<double, bool> evaluate(Eigen::Vector2d);
+    // point: x, y
+    std::pair<double, bool> evaluate(double, double);
 };
 
-} // namespace math
 } // namespace navigation_function
 } // namespace roboflow
+
+#endif

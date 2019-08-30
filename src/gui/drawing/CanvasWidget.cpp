@@ -25,7 +25,7 @@
 #include <cmath>
 #include <algorithm>
 
-#include "navigation_function/common/math/Squircle.hpp"
+#include "navigation_function/math/Squircle.hpp"
 
 #include "CanvasWidget.hpp"
 

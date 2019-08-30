@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1.0)
 project(math)
 
 add_library(navigation_function_math
+    StarObject.cpp    
     Transform.cpp
     DestinationFunction.cpp
     BubbleDestinationFunction.cpp

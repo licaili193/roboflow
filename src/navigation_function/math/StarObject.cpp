@@ -22,7 +22,7 @@
 
 /* code */
 
-#include <Eigen/Core>
+#include "StarObject.hpp"
 
 namespace roboflow
 {
@@ -31,11 +31,18 @@ namespace navigation_function
 namespace math
 {
 
-class ScalarObject
+uint64_t StarObject::__star_object_index = 0;
+
+StarObject::StarObject()
 {
-public:
-  virtual double evaluate(Eigen::Vector2d) const = 0;
-};
+    id_ = __star_object_index;
+    __star_object_index++;
+}
+
+uint64_t StarObject::getId() const
+{
+    return id_;
+}
 
 } // namespace math
 } // namespace navigation_function
