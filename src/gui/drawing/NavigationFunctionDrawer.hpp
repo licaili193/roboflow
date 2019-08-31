@@ -22,29 +22,38 @@
 
 /* code */
 
-#ifndef __CONTOURPLOT__
-#define __CONTOURPLOT__
+#ifndef __NAVIGATIONFUNCTIONDRAWER__
+#define __NAVIGATIONFUNCTIONDRAWER__
+
+#include <memory>
+#include <vector>
+#include <utility>
 
 #include <blend2d.h>
 
-#include "third_party/Jonathan/ListContour.h"
+#include "navigation_function/math/StarObject.hpp"
+#include "navigation_function/NavigationFunction.hpp"
 
 namespace roboflow
 {
-namespace contour
+namespace gui
+{
+namespace drawing
 {
 
-class ContourPlot
+class NavigationFunctionDrawer
 {
-    Jonathan::CListContour contour_;
-
 public:
-    ContourPlot();
+    static BLPath drawStarObject(
+        std::shared_ptr<navigation_function::math::StarObject>);
 
-    void draw(BLContext &);
+    static std::vector<std::pair<BLPath, double>> drawContour(
+        std::shared_ptr<navigation_function::NavigationFunction>,
+        BLRect);
 };
 
-} // namespace contour
+} // namespace drawing
+} // namespace gui
 } // namespace roboflow
 
 #endif

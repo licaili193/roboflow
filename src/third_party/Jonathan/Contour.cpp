@@ -403,7 +403,7 @@ void CContour::Pass2(int x1, int x2, int y1, int y2)
 			yy3 = y1 + yy3 * (y2 - y1);
 			xx3 = xoff + xx3 * m_dDx;
 			yy3 = yoff + yy3 * m_dDy;
-			f = (*m_pFieldFcn)(xx3, yy3);
+			f = m_pFieldFcn(xx3, yy3);
 			if (f == v)
 			{
 				ExportLine(i, bot, y1, top, y2);
@@ -437,7 +437,7 @@ double CContour::Field(int x, int y) /* evaluate funct if we must,	*/
 	FnctData(x, y)->m_sBotLen = 0;
 	FnctData(x, y)->m_sRightLen = 0;
 	FnctData(x, y)->m_sLeftLen = 0;
-	return (FnctData(x, y)->m_dFnVal = (*m_pFieldFcn)(x1, y1));
+	return (FnctData(x, y)->m_dFnVal = m_pFieldFcn(x1, y1));
 }
 
 void CContour::SetPlanes(const std::vector<double> &vPlanes)
@@ -446,12 +446,12 @@ void CContour::SetPlanes(const std::vector<double> &vPlanes)
 	CContour::CleanMemory();
 
 	m_vPlanes = vPlanes;
-};
+}
 
-void CContour::SetFieldFcn(double (*_pFieldFcn)(double, double))
+void CContour::SetFieldFcn(std::function<double(double, double)> _pFieldFcn)
 {
 	m_pFieldFcn = _pFieldFcn;
-};
+}
 
 void CContour::SetFirstGrid(int iCol, int iRow)
 {

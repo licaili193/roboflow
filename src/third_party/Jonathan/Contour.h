@@ -36,6 +36,7 @@
 #endif // _MSC_VER > 1000
 
 #include <vector>
+#include <functional>
 
 namespace Jonathan
 {
@@ -78,7 +79,7 @@ public:
 	// Sets the isocurve values
 	void SetPlanes(const std::vector<double> &vPlanes);
 	// Sets the pointer to the F(x,y) funtion
-	void SetFieldFcn(double (*_pFieldFcn)(double, double));
+	void SetFieldFcn(std::function<double(double, double)>);
 
 	// Retrieve dimension of grids, contouring region and isocurve
 	int GetColFir() const { return m_iColFir; };
@@ -103,13 +104,14 @@ public:
 
 protected:
 	// Accesibles variables
-	std::vector<double> m_vPlanes;			   // value of contour planes
-	double m_pLimits[4];					   // left, right, bottom, top
-	int m_iColFir;							   // primary	grid, number of columns
-	int m_iRowFir;							   // primary	grid, number of rows
-	int m_iColSec;							   // secondary grid, number of columns
-	int m_iRowSec;							   // secondary grid, number of rows
-	double (*m_pFieldFcn)(double x, double y); // pointer to F(x,y) function
+	std::vector<double> m_vPlanes; // value of contour planes
+	double m_pLimits[4];		   // left, right, bottom, top
+	int m_iColFir;				   // primary	grid, number of columns
+	int m_iRowFir;				   // primary	grid, number of rows
+	int m_iColSec;				   // secondary grid, number of columns
+	int m_iRowSec;				   // secondary grid, number of rows
+	std::function<double(double, double)>
+		m_pFieldFcn; // pointer to F(x,y) function
 
 	// Protected function
 	virtual void ExportLine(int iPlane, int x1, int y1, int x2, int y2) = 0; // plots a line from (x1,y1) to (x2,y2)

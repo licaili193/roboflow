@@ -12,4 +12,13 @@ target_link_libraries(drawing_widgets
     navigation_function_math
 )
 
+add_library(navigation_function_drawer
+    NavigationFunctionDrawer.cpp
+)
+target_link_libraries(navigation_function_drawer 
+    Blend2D::Blend2D
+    navigation_function_math
+    navigation_function
+)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
