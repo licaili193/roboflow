@@ -64,6 +64,21 @@ double DestinationFunction::evaluate(Eigen::Vector2d p) const
     return (p - destination_).squaredNorm();
 }
 
+Eigen::Vector2d DestinationFunction::getDestination() const
+{
+    return destination_;
+}
+
+double DestinationFunction::getDestX() const
+{
+    return destination_(0);
+}
+
+double DestinationFunction::getDestY() const
+{
+    return destination_(1);
+}
+
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow

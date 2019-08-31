@@ -51,6 +51,10 @@ public:
   // destination offset: dx, dy
   void offset(double, double);
 
+  Eigen::Vector2d getDestination() const;
+  double getDestX() const;
+  double getDestY() const;
+
   double evaluate(Eigen::Vector2d) const override;
 };
 

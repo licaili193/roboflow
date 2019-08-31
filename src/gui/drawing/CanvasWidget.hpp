@@ -28,9 +28,11 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <memory>
 
 #include <blend2d.h>
 
+#include "navigation_function/NavigationFunction.hpp"
 #include "DrawableWidget.hpp"
 
 namespace roboflow
@@ -48,9 +50,13 @@ class CanvasWidget final : public DrawableWidget
     double data_dy_;
 
     // tempoary data
+    std::shared_ptr<navigation_function::NavigationFunction> nf_;
     // tempoary data
 
 public:
+    // temporary set data function
+    void setNavigationFunction(
+        std::shared_ptr<navigation_function::NavigationFunction>);
     // data range: x, y, dx, dy
     void setRange(double, double, double, double);
 

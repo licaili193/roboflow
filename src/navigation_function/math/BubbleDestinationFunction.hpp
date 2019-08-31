@@ -54,6 +54,11 @@ public:
   // radius: r
   void setRadius(double);
 
+  Eigen::Vector2d getDestination() const;
+  double getDestX() const;
+  double getDestY() const;
+  double getRadius() const;
+
   double evaluate(Eigen::Vector2d) const override;
 };
 

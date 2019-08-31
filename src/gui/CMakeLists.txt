@@ -29,4 +29,7 @@ add_executable(canvas_test
 target_link_libraries(canvas_test 
     Blend2D::Blend2D
     drawing_widgets
+    navigation_function_drawer
+    navigation_function
+    navigation_function_math
 )

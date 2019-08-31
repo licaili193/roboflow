@@ -108,13 +108,17 @@ std::pair<double, bool> SphereWorldNavigationFunction::evaluate(Eigen::Vector2d 
         }
         else
         {
-            eraseObstacle(pr.first);
+            // eraseObstacle(pr.first);
             // TODO: log here
         }
     }
-    return std::make_pair(
-        J / std::pow(std::pow(J, kappa_) + beta, 1.0 / kappa_),
-        true);
+    double res = J / std::pow(std::pow(J, kappa_) + beta, 1.0 / kappa_);
+    return std::make_pair(res, true);
+}
+
+std::pair<double, bool> SphereWorldNavigationFunction::evaluate(double x, double y)
+{
+    return evaluate({x, y});
 }
 
 std::vector<std::shared_ptr<math::StarObject>> SphereWorldNavigationFunction::getObstacles() const

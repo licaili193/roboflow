@@ -71,6 +71,26 @@ double BubbleDestinationFunction::evaluate(Eigen::Vector2d p) const
     return std::pow((p - destination_).squaredNorm() - radius_ * radius_, 2.0);
 }
 
+Eigen::Vector2d BubbleDestinationFunction::getDestination() const
+{
+    return destination_;
+}
+
+double BubbleDestinationFunction::getDestX() const
+{
+    return destination_(0);
+}
+
+double BubbleDestinationFunction::getDestY() const
+{
+    return destination_(1);
+}
+
+double BubbleDestinationFunction::getRadius() const
+{
+    return radius_;
+}
+
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow

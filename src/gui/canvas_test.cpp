@@ -22,16 +22,22 @@
 
 /* code */
 
+#include <memory>
+
 #include <blend2d.h>
 
 #include "gui/drawing/AxisWidget.hpp"
 #include "gui/drawing/CanvasWidget.hpp"
+#include "gui/drawing/NavigationFunctionDrawer.hpp"
+#include "navigation_function/SphereWorldNavigationFunction.hpp"
+#include "navigation_function/math/Sphere.hpp"
+#include "navigation_function/math/BubbleDestinationFunction.hpp"
 
 int main(int argc, char *argv[])
 {
     roboflow::gui::drawing::AxisWidget axis;
-    axis.setViewport(0, 0, 480, 480);
-    axis.setRange(-1, -1, 2, 2);
+    axis.setViewport(0, 0, 720, 720);
+    axis.setRange(-11, -11, 22, 22);
     axis.setDraw(true);
 
     roboflow::gui::drawing::CanvasWidget canvas;
@@ -43,7 +49,23 @@ int main(int argc, char *argv[])
                     canvas_range.w, canvas_range.h);
     canvas.setDraw(true);
 
-    BLImage img(480, 480, BL_FORMAT_PRGB32);
+    using roboflow::navigation_function::DestinationFunctionType;
+    using roboflow::navigation_function::SphereWorldNavigationFunction;
+    using roboflow::navigation_function::math::BubbleDestinationFunction;
+    using roboflow::navigation_function::math::Sphere;
+
+    auto dest = std::make_shared<BubbleDestinationFunction>(0, 0, 2);
+    auto obj_0 = std::make_shared<Sphere>(0, 0, 10);
+    auto obj_1 = std::make_shared<Sphere>(5, 0, 1);
+    auto nf = std::make_shared<SphereWorldNavigationFunction>();
+    nf->setDestination(dest, DestinationFunctionType::DestSphere);
+    nf->setZerothObstacle(obj_0);
+    nf->setObstacle(obj_1);
+    nf->setKappa(1.0);
+
+    canvas.setNavigationFunction(nf);
+
+    BLImage img(720, 720, BL_FORMAT_PRGB32);
 
     // Attach a rendering context into `img`.
     BLContext ctx(img);

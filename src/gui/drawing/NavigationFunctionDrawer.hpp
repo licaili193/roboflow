@@ -50,6 +50,10 @@ public:
     static std::vector<std::pair<BLPath, double>> drawContour(
         std::shared_ptr<navigation_function::NavigationFunction>,
         BLRect);
+
+    static void drawNavigationFunction(
+        std::shared_ptr<navigation_function::NavigationFunction>,
+        BLRect, BLContext &, double);
 };
 
 } // namespace drawing
