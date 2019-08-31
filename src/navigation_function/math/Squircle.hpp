@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __SQUIRCLE__
+#define __SQUIRCLE__
+
 #include <vector>
 
 #include <Eigen/Core>
@@ -78,3 +81,5 @@ public:
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow
+
+#endif

@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __TRANSFORM__
+#define __TRANSFORM__
+
 #include <Eigen/Core>
 
 namespace roboflow
@@ -64,3 +67,5 @@ public:
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow
+
+#endif

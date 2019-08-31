@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __STAROBJECT__
+#define __STAROBJECT__
+
 #include <vector>
 
 #include <Eigen/Core>
@@ -54,3 +57,5 @@ public:
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow
+
+#endif

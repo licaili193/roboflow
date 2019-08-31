@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __DESTINATIONFUNCTION__
+#define __DESTINATIONFUNCTION__
+
 #include <Eigen/Core>
 
 #include "ScalarObject.hpp"
@@ -54,3 +57,5 @@ public:
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow
+
+#endif

@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __SPHERE__
+#define __SPHERE__
+
 #include <vector>
 
 #include <Eigen/Core>
@@ -63,3 +66,5 @@ public:
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow
+
+#endif

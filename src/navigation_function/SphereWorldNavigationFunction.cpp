@@ -58,9 +58,11 @@ bool SphereWorldNavigationFunction::eraseObstacle(uint64_t id)
     return static_cast<bool>(obstacles_.erase(id));
 }
 
-void SphereWorldNavigationFunction::setDestination(std::shared_ptr<math::ScalarObject> dest)
+void SphereWorldNavigationFunction::setDestination(std::shared_ptr<math::ScalarObject> dest,
+                                                   DestinationFunctionType type)
 {
     destination_ = dest;
+    d_type_ = type;
 }
 
 void SphereWorldNavigationFunction::clear()
@@ -77,21 +79,21 @@ std::pair<double, bool> SphereWorldNavigationFunction::evaluate(Eigen::Vector2d 
     if (auto t = destination_.lock())
         J = t->evaluate(p);
     else
-        return std::make_pair(0, false); // TODO: log here
+        return std::make_pair(1, false); // TODO: log here
 
     double beta = 1.0;
     if (auto t = zeroth_obstacle_.lock())
     {
         double tmp = t->evaluate(p);
         if (tmp > 0)
-            return std::make_pair(0, false); // TODO: log here
+            return std::make_pair(1, false); // TODO: log here
         else
             beta *= std::fabs(tmp);
     }
     else
     {
         // TODO: log here
-        return std::make_pair(0, false);
+        return std::make_pair(1, false);
     }
     for (auto pr : obstacles_)
     {
@@ -100,7 +102,7 @@ std::pair<double, bool> SphereWorldNavigationFunction::evaluate(Eigen::Vector2d 
         {
             double tmp = t->evaluate(p);
             if (tmp < 0)
-                return std::make_pair(0, false); // TODO: log here
+                return std::make_pair(1, false); // TODO: log here
             else
                 beta *= tmp;
         }
@@ -113,6 +115,23 @@ std::pair<double, bool> SphereWorldNavigationFunction::evaluate(Eigen::Vector2d 
     return std::make_pair(
         J / std::pow(std::pow(J, kappa_) + beta, 1.0 / kappa_),
         true);
+}
+
+std::vector<std::shared_ptr<math::StarObject>> SphereWorldNavigationFunction::getObstacles() const
+{
+    std::vector<std::shared_ptr<math::StarObject>> res;
+    res.push_back(zeroth_obstacle_.lock());
+    for (auto p : obstacles_)
+    {
+        res.push_back(p.second.lock());
+    }
+    return res;
+}
+
+std::pair<std::shared_ptr<math::ScalarObject>, DestinationFunctionType>
+SphereWorldNavigationFunction::getDestinationFunction() const
+{
+    return std::make_pair(destination_.lock(), d_type_);
 }
 
 } // namespace navigation_function

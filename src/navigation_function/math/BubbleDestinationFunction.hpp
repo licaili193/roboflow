@@ -22,6 +22,9 @@
 
 /* code */
 
+#ifndef __BUBBLEDESTINATIONFUNCTION__
+#define __BUBBLEDESTINATIONFUNCTION__
+
 #include <Eigen/Core>
 
 #include "ScalarObject.hpp"
@@ -57,3 +60,5 @@ public:
 } // namespace math
 } // namespace navigation_function
 } // namespace roboflow
+
+#endif
