@@ -149,6 +149,7 @@ void NavigationFunctionDrawer::drawNavigationFunction(
     // draw boundary
     auto objs = std::move(nf->getObstacles());
     ctx.setStrokeWidth(2.0 * normal_stoke_width);
+    ctx.setStrokeStyle(BLRgba32(0xFF0000AA));
     for (auto p : objs)
     {
         auto path = std::move(drawStarObject(p));
@@ -165,11 +166,12 @@ void NavigationFunctionDrawer::drawNavigationFunction(
         // dest->
         ctx.setFillStyle(BLRgba32(0xFF000000));
         ctx.fillCircle(dest->getDestX(), dest->getDestY(), 5.0 * normal_stoke_width);
-        ctx.setStrokeWidth(normal_stoke_width);
-        BLArray<double> dash;
-        dash.append(5.0 * normal_stoke_width);
-        dash.append(5.0 * normal_stoke_width);
-        ctx.setStrokeDashArray(dash);
+        // BLArray<double> dash;
+        // dash.append(5.0 * normal_stoke_width);
+        // dash.append(5.0 * normal_stoke_width);
+        // ctx.setStrokeDashArray(dash);
+        ctx.setStrokeWidth(2.0 * normal_stoke_width);
+        ctx.setStrokeStyle(BLRgba32(0xFF00AA00));
         ctx.strokeCircle(dest->getDestX(), dest->getDestY(), dest->getRadius());
     }
     else
