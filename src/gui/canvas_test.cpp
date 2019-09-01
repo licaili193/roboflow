@@ -56,12 +56,14 @@ int main(int argc, char *argv[])
 
     auto dest = std::make_shared<BubbleDestinationFunction>(0, 0, 2);
     auto obj_0 = std::make_shared<Sphere>(0, 0, 10);
-    auto obj_1 = std::make_shared<Sphere>(5, 0, 1);
+    double lct = 0;
+    auto obj_1 = std::make_shared<Sphere>(5 * std::cos(M_PI / 3.0 * lct),
+                                          5 * std::sin(M_PI / 3.0 * lct), 1);
     auto nf = std::make_shared<SphereWorldNavigationFunction>();
     nf->setDestination(dest, DestinationFunctionType::DestSphere);
     nf->setZerothObstacle(obj_0);
     nf->setObstacle(obj_1);
-    nf->setKappa(1.0);
+    nf->setKappa(1.28);
 
     canvas.setNavigationFunction(nf);
 
