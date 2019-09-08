@@ -71,17 +71,17 @@ std::vector<std::pair<BLPath, double>> NavigationFunctionDrawer::drawContour(
 
     Jonathan::CListContour contour;
     double limits[4] = {rect.x, rect.x + rect.w, rect.y, rect.y + rect.h};
-    double step = 0.03;
+    double step = 0.1;
     double plane = step;
     std::vector<double> planes;
-    while (plane < 1)
+    while (plane < 0.99)
     {
         planes.push_back(plane);
         plane += step;
     }
     // map planes into a curve
-    for (auto &d : planes)
-        d = std::pow(d, 2.0) * (1.0 - d) + std::pow(d, 1.0 / 2.0) * d;
+    // for (auto &d : planes)
+    //    d = std::pow(d, 2.0) * (1.0 - d) + std::pow(d, 1.0 / 2.0) * d;
     contour.SetLimits(limits);
     contour.SetPlanes(planes);
     contour.SetFirstGrid(256, 256);
@@ -156,7 +156,7 @@ void NavigationFunctionDrawer::drawNavigationFunction(
 
     // draw boundary
     auto objs = std::move(nf->getObstacles());
-    ctx.setStrokeWidth(2.0 * normal_stoke_width);
+    ctx.setStrokeWidth(4.0 * normal_stoke_width);
     ctx.setStrokeStyle(BLRgba32(0xFF0000FF));
     for (auto p : objs)
     {
@@ -173,7 +173,7 @@ void NavigationFunctionDrawer::drawNavigationFunction(
         std::shared_ptr<BD> dest = std::dynamic_pointer_cast<BD>(p.first);
         ctx.setFillStyle(BLRgba32(0xFF000000));
         ctx.fillCircle(dest->getDestX(), dest->getDestY(), 5.0 * normal_stoke_width);
-        ctx.setStrokeWidth(2.0 * normal_stoke_width);
+        ctx.setStrokeWidth(4.0 * normal_stoke_width);
         // BLArray<double> dash;
         // dash.append(2.0 * normal_stoke_width, 2.0 * normal_stoke_width);
         // ctx.setStrokeDashArray(dash);

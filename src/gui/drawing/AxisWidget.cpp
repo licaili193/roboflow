@@ -52,6 +52,7 @@ void AxisWidget::setRange(double x, double y, double dx, double dy)
 
     // iterate y axis labels to see what's the max width
     text_height_ = font_.size();
+    max_y_label_width_ = 0.0;
     for (auto s : y_tick_labels_)
     {
         BLGlyphBuffer gb;
@@ -91,6 +92,8 @@ std::vector<double> AxisWidget::get_ticks_helper(double max, double min, int ste
     double scale_accum = scale_min;
     while (scale_accum <= scale_max)
     {
+        if (std::fabs(scale_accum) < 1e-5)
+            scale_accum = 0.0;
         res.push_back(scale_accum);
         scale_accum += step;
     }
@@ -149,7 +152,7 @@ void AxisWidget::draw(BLContext &ctx)
             if (y_ticks_[i] < canvas_data_y_ || y_ticks_[i] > canvas_data_y_ + canvas_data_height_)
                 continue;
             BLGlyphBuffer gb;
-            gb.setUtf8Text(x_tick_labels_[i].c_str(), x_tick_labels_[i].length());
+            gb.setUtf8Text(y_tick_labels_[i].c_str(), y_tick_labels_[i].length());
             BLTextMetrics m;
             font_.getTextMetrics(gb, m);
             double pos_x = icx_ - m.boundingBox.x1 + m.boundingBox.x0 - margin_;
